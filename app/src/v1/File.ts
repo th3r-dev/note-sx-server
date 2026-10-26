@@ -15,6 +15,8 @@ export const fileExtensionWhitelist = [
   'jpg', 'jpeg', 'png', 'webp', 'svg', 'gif',
   // Video
   'webm',
+  // Audio
+  'mp3', 'm4a', 'ogg', 'oga', 'opus', 'wav', 'weba', 'aac',
   // Fonts
   'ttf', 'otf', 'woff', 'woff2'
 ]
@@ -29,6 +31,14 @@ export const mimeTypes: { [key: string]: string } = {
   svg: 'image/svg+xml',
   gif: 'image/gif',
   webm: 'video/webm',
+  mp3: 'audio/mpeg',
+  m4a: 'audio/mp4',
+  ogg: 'audio/ogg',
+  oga: 'audio/ogg',
+  opus: 'audio/opus',
+  wav: 'audio/wav',
+  weba: 'audio/webm',
+  aac: 'audio/aac',
   ttf: 'font/ttf',
   otf: 'font/otf',
   woff: 'font/woff',

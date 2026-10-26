@@ -35,15 +35,25 @@ function buildApp (env: Env): App {
   }
 }
 
-/** Serve an R2 object at the given key, or 404 if it doesn't exist. */
+/**
+ * Serve an R2 object at the given key, or 404 if it doesn't exist.
+ * Honours a Range header with a 206 - Safari won't play audio/video without it.
+ */
 async function serveR2 (c: Context, key: string) {
   const app: App = c.get('app')
-  const object = await app.files.get(key)
+  const wantsRange = !!c.req.header('range')
+  const object = await app.files.get(key, wantsRange ? { range: c.req.raw.headers } : undefined)
   if (!object) return c.text('', 404)
   const headers = new Headers()
   object.writeHttpMetadata(headers)
   headers.set('etag', object.httpEtag)
-  return new Response(object.body, { headers })
+  headers.set('accept-ranges', 'bytes')
+  const range = object.range
+  if (!wantsRange || !range) return new Response(object.body, { headers })
+  const start = 'suffix' in range ? object.size - range.suffix : range.offset ?? 0
+  const length = 'suffix' in range ? range.suffix : range.length ?? object.size - start
+  headers.set('content-range', `bytes ${start}-${start + length - 1}/${object.size}`)
+  return new Response(object.body, { status: 206, headers })
 }
 
 const app = new Hono<{ Bindings: Env, Variables: Variables }>()
