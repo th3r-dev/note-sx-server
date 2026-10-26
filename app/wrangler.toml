@@ -40,5 +40,5 @@ zone_name = "th33raphat.dev"
 BASE_WEB_URL = "https://note.th33raphat.dev"
 FOLDER_PREFIX = "0"
 ALLOW_NEW_USERS = "true"
-MAXIMUM_UPLOAD_SIZE_MB = "5"
+MAXIMUM_UPLOAD_SIZE_MB = "50" # audio recordings; Workers caps request bodies at 100 MB
 FILENAME_LENGTH_HTML = "8"
